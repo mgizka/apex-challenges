@@ -44,8 +44,6 @@ public class AccountTriggerTest {
 
         User user = [SELECT Id, Email from User where Id != : UserInfo.getUserId() limit 1];
 
-        System.debug('Selected User Id' + user.Id);
-
         Account account = new Account(Name='AutomatedTest Account try'); 
 
         insert account;
