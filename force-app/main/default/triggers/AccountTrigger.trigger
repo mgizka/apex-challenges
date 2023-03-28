@@ -2,7 +2,7 @@ trigger AccountTrigger on Account (before insert) {
     
     if (Trigger.isAfter && Trigger.isInsert){
 
-        Set<Contact> contacts = new Set<Contact>(); 
+        List<Contact> contacts = new List<Contact>(); 
 
         for(Account a : Trigger.new){
             contacts.add(
