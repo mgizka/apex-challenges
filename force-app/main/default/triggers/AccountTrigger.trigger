@@ -1,4 +1,4 @@
-trigger AccountTrigger on Account (after insert, after update) {
+trigger AccountTrigger on Account (after insert, after update, before delete) {
     
     if (Trigger.isInsert && Trigger.isAfter){
 
@@ -64,6 +64,18 @@ trigger AccountTrigger on Account (after insert, after update) {
                 
             insert opportunities;
         }
+    }
+    
+    if(Trigger.isBefore && Trigger.isDelete){
+
+        List <Contact>  contacts = [SELECT Id, AccountId from Contact WHERE AccountId IN :Trigger.old];
+
+        Set<Id> accIds = new Set<Id>(); 
+
+        for(Contact contact : contacts){
+            Trigger.oldMap.get(contact.AccountId).addError('Account with associated Contact(s) can not be deleted');
+        }
+
     }
 
 }

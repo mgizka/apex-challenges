@@ -118,7 +118,45 @@ public class AccountTriggerTest {
 
         System.assertEquals(opportunities[0].Name, 'Opportunity for Agriculture' );
         
+    }
 
+    @isTest
+    static void testDeleteAccountWithContact() {
+
+        Account account = new Account(Name='AutomatedTest Account try', Industry='Banking'); 
+        insert account;
+        Contact contact = new Contact(FirstName=account.Name, LastName=account.Name);
+        insert contact;
         
+        Test.startTest();
+            try {
+                delete account;
+            }
+            catch(DMLException e) {
+                System.assert(e.getMessage().contains('Account with associated Contact(s) can not be deleted'),
+                             'Account with associated contact should not be deleted.');
+                System.assertEquals(1, [Select Id From Account Where Id=:account.id].size(), 
+                                        'Account with associated contact should not be deleted.');
+            }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void testDeleteAccountWithoutContact() {
+        Account account = new Account(Name='AutomatedTest Account try', Industry='Banking'); 
+        insert account;
+
+        List<Contact> contacts = [SELECT Id from Contact where accountId = :account.id];
+        delete contacts;
+        
+        Test.startTest();
+            try {
+                delete account;
+            }
+            catch(DMLException e) {
+                System.assertEquals(0, [Select Id From Account Where Id = :account.id].size(), 
+                                        'Account without associated contact can be deleted.');
+            }
+        Test.stopTest();
     }
 }
