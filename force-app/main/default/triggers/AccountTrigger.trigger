@@ -73,7 +73,7 @@ trigger AccountTrigger on Account (after insert, after update, before delete) {
         Set<Id> accIds = new Set<Id>(); 
 
         for(Contact contact : contacts){
-            Trigger.oldMap.get(contact.AccountId).addError('You cannot delete this accout as it has contact data associated');
+            Trigger.oldMap.get(contact.AccountId).addError('Account with associated Contact(s) can not be deleted');
         }
 
     }
