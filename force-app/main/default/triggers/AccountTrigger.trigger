@@ -1,6 +1,6 @@
-trigger AccountTrigger on Account (before insert) {
+trigger AccountTrigger on Account (after insert, after update) {
     
-    if (Trigger.isAfter && Trigger.isInsert){
+    if (Trigger.isInsert && Trigger.isAfter){
 
         List<Contact> contacts = new List<Contact>(); 
 
@@ -12,6 +12,28 @@ trigger AccountTrigger on Account (before insert) {
 
         insert contacts;
         
+    } else if (Trigger.isUpdate && Trigger.isAfter){
+
+        Set<Id> accIds = new Set<Id>();
+
+        for(Account account : Trigger.new){
+            if (account.OwnerId != Trigger.oldMap.get(account.Id).OwnerId) 
+                accIds.add(account.Id);
+        }
+
+        if (accIds.size()>0){
+        
+            List<Contact> contacts = new List<Contact>([SELECT Id, OwnerId, Account.OwnerId FROM Contact WHERE AccountId IN :accIds]);
+
+            if(!contacts.isEmpty()){
+
+                for(Contact contact : contacts){
+                    contact.OwnerId = Contact.Account.OwnerId;
+                }
+
+                update contacts;
+            }
+        }
     }
 
 }
