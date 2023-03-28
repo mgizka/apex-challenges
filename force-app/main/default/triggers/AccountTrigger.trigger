@@ -68,11 +68,11 @@ trigger AccountTrigger on Account (after insert, after update, before delete) {
     
     if(Trigger.isBefore && Trigger.isDelete){
 
-        List <Contact>  contacts = [SELECT Id, AccountId from Contact WHERE AccoundId IN :Trigger.old];
+        List <Contact>  contacts = [SELECT Id, AccountId from Contact WHERE AccountId IN :Trigger.old];
 
         Set<Id> accIds = new Set<Id>(); 
 
-        for(Contact contact : contracts){
+        for(Contact contact : contacts){
             Trigger.oldMap.get(contact.AccountId).addError('You cannot delete this accout as it has contact data associated');
         }
 
