@@ -1,8 +1,4 @@
 trigger AccountTrigger on Account (after insert, after update) {
-
-    System.debug('Trigger insert:' + Trigger.isInsert );
-    System.debug('Trigger update:' + Trigger.isUpdate );
-    System.debug('Trigger after:' + Trigger.isAfter );
     
     if (Trigger.isInsert && Trigger.isAfter){
 
@@ -50,7 +46,6 @@ trigger AccountTrigger on Account (after insert, after update) {
                     account.Industry != Trigger.oldMap.get(account.Id).Industry)
                 )
                     {
-                    System.debug('adding account id:' + account.Id );
                     agrIds.add(account.Id);
                 }
             }

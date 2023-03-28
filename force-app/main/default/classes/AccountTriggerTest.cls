@@ -93,4 +93,32 @@ public class AccountTriggerTest {
 
         System.assert(opportunities.size()==0, 'There should not be any opportunities');
     }
+
+    @isTest
+    static void testAccontAgricultureIndustryUpdate(){
+
+
+        Account account = new Account(Name='AutomatedTest Account try', Industry='Bankingß'); 
+
+        insert account;
+
+        account.Industry='Agriculture';
+
+        update account;
+
+        List<Opportunity> opportunities = [SELECT Name, StageName, CloseDate, Amount from Opportunity WHERE AccountId = :account.Id];
+
+        System.assert(opportunities.size()==1, 'There should be at least one opportunity');
+        System.assertEquals(opportunities[0].StageName, 'Prospecting');
+
+        Date today_90 = Date.today().addDays(90);
+        System.assertEquals(opportunities[0].CloseDate, today_90 );
+
+        System.assertEquals(opportunities[0].Amount, 0 );
+
+        System.assertEquals(opportunities[0].Name, 'Opportunity for Agriculture' );
+        
+
+        
+    }
 }
