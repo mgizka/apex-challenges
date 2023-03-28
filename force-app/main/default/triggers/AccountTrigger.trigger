@@ -1,4 +1,8 @@
 trigger AccountTrigger on Account (after insert, after update) {
+
+    System.debug('Trigger insert:' + Trigger.isInsert );
+    System.debug('Trigger update:' + Trigger.isUpdate );
+    System.debug('Trigger after:' + Trigger.isAfter );
     
     if (Trigger.isInsert && Trigger.isAfter){
 
@@ -33,6 +37,37 @@ trigger AccountTrigger on Account (after insert, after update) {
 
                 update contacts;
             }
+        }
+    }
+     if((Trigger.isInsert || Trigger.isUpdate) && Trigger.isAfter){
+
+        Set<Id> agrIds = new Set<Id>();
+
+        for(Account account : Trigger.New ){
+            if (account.Industry == 'Agriculture' && 
+                ( 
+                    Trigger.isInsert ||
+                    account.Industry != Trigger.oldMap.get(account.Id).Industry)
+                )
+                    {
+                    System.debug('adding account id:' + account.Id );
+                    agrIds.add(account.Id);
+                }
+            }
+
+        if (!agrIds.isEmpty()){
+                
+            List<Opportunity> opportunities = new List<Opportunity>();
+
+            Date today_90 = Date.today().addDays(90);
+
+            for(Id accId : agrIds){
+                opportunities.add (
+                   new Opportunity(Name='Opportunity for Agriculture', AccountId=accId, StageName = 'Prospecting', Amount = 0, CloseDate = today_90)
+                );
+            }
+                
+            insert opportunities;
         }
     }
 
