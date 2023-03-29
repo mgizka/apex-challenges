@@ -40,7 +40,7 @@ trigger ContactTrigger on Contact (after insert, after update, after delete) {
             List<Account> accounts = [SELECT Total_Contacts_Count__c FROM Account WHERE Id in :accIds];
 
             for(Account acc : accounts){
-                acc.Total_Contacts_Count__c = aggregationAccounts.get(acc.Id);
+                acc.Total_Contacts_Count__c = aggregationAccounts.get(acc.Id)==null?0:aggregationAccounts.get(acc.Id);
             }
 
             update accounts;
