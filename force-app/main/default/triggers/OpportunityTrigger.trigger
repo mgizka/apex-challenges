@@ -24,13 +24,11 @@ trigger OpportunityTrigger on Opportunity (before delete, after insert, after up
 
                 Messaging.SingleEmailMessage mail =  new Messaging.SingleEmailMessage();
                 
-                List<String> sendTo = new List<String>();
-                
-                sendTo.add('marcin.gizka@gmail.com');
-                System.debug('opp.Owner.Email:'+opp.Owner.Email);
-                //sendTo.add(opp.Account.Owner.Email);
-                
-                mail.setToAddresses(new String[] { 'marcin.gizka@gmail.com' });
+                mail.setToAddresses(
+                    opp.OwnerId !=opp.Account.OwnerId 
+                    ? new List<String>{opp.Owner.Email, opp.Account.Owner.Email}
+                    : new List<String>{opp.Owner.Email}
+                );
                 mail.setSubject('Opportunity '+opp.Name+' has been closed');
                 mail.setPlainTextBody('Link: '+ URL.getSalesforceBaseUrl().toExternalForm()+ '/'+opp.Id);
                 mail.setOrgWideEmailAddressId(owa.id);
