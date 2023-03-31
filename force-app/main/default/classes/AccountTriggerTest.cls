@@ -159,4 +159,48 @@ public class AccountTriggerTest {
             }
         Test.stopTest();
     }
+
+    @isTest
+    static void testContactMailingCityChangeOnAccountBillingCityUpdate(){
+        Account account = new Account(Name='AutomatedTest Account try', Industry='Banking'); 
+        insert account;
+
+        List<Contact> contacts = 
+            new List<Contact>{ 
+                new Contact(FirstName='Contact1', LastName='Contact1', MailingCity = 'Test1', AccountId=account.Id), 
+                new Contact(FirstName='Contact2', LastName='Contact2', MailingCity = 'Test1', AccountId=account.Id)
+        };
+    
+        insert contacts;
+
+        account.BillingCity = 'Test Billing City';
+        update account;
+
+        for(Contact contact : [SELECT MailingCity from Contact where AccountId =:account.Id]){
+            System.assertEquals('Test Billing City', contact.MailingCity, 'MailingCity should be \'Test Billing City\''); 
+        }
+    }
+
+    @isTest
+    static void testContactMailingCityNotChangedOnAccountUpdate(){
+        Account account = new Account(Name='AutomatedTest Account try', Industry='Banking'); 
+        insert account;
+
+        delete [SELECT Id FROM Contact WHERE AccountId = :account.id];
+
+        List<Contact> contacts = 
+            new List<Contact>{ 
+                new Contact(FirstName='Contact1', LastName='Contact1', MailingCity = 'Test', AccountId=account.Id), 
+                new Contact(FirstName='Contact2', LastName='Contact2', MailingCity = 'Test', AccountId=account.Id)
+        };
+    
+        insert contacts;
+
+        account.Industry = 'Finance';
+        update account;
+
+        for(Contact contact : [SELECT MailingCity from Contact where AccountId =:account.Id]){
+            System.assertEquals('Test', contact.MailingCity, 'MailingCity should be \'Test\''); 
+        }
+    }
 }
