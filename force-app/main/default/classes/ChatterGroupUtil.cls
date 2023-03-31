@@ -16,5 +16,14 @@ public class ChatterGroupUtil {
 
         if(!groupMembers.isEmpty())
                 insert groupMembers;
+
+        List<FeedItem> feedItems = new List<FeedItem>();
+
+        for(User user : [SELECT Name FROM User WHERE Id= :users ]){
+            feedItems.add(new FeedItem(ParentId=chatterGroup[0].Id, Body = 'Hello '+user.Name));
+        }
+
+        if (!feedItems.isEmpty())
+            insert feedItems;
     }
 }
