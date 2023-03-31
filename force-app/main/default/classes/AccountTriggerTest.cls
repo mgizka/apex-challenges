@@ -182,7 +182,7 @@ public class AccountTriggerTest {
     }
 
     @isTest
-    static void testContactMailingCityNotChangedOnAccountUpdate(){
+    static void testContactMailingCityNotChangeOnAccountUpdate(){
         Account account = new Account(Name='AutomatedTest Account try', Industry='Banking'); 
         insert account;
 
