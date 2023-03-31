@@ -47,11 +47,11 @@ trigger AccountTrigger on Account (after insert, after update, before delete) {
         List <Contact> contacts = new List<Contact>();
 
         for (Contact contact : [SELECT Id, MailingCity, AccountId FROM Contact WHERE AccountId IN :accountsBillingCityChanged.keySet()]){
-            contact.MailingCity = accountsBillingCityChanged.get('AccountId').BillingCity;
+            contact.MailingCity = accountsBillingCityChanged.get(contact.AccountId).BillingCity;
             contacts.add(contact);
         } 
 
-        uopdate contacts;
+        update contacts;
 
     }
      if((Trigger.isInsert || Trigger.isUpdate) && Trigger.isAfter){
