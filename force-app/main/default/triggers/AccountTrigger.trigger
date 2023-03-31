@@ -34,6 +34,25 @@ trigger AccountTrigger on Account (after insert, after update, before delete) {
                 update contacts;
             }
         }
+
+        Map<Id, Account> accountsBillingCityChanged = new Map<Id,Account>();
+
+        for(Account account : [SELECT BillingCity FROM Account where Id In: Trigger.new]){
+            if(account.BillingCity!=Trigger.oldMap.get(account.Id).BillingCity){
+                accountsBillingCityChanged.put(account.Id, account);
+                
+            }
+        }
+
+        List <Contact> contacts = new List<Contact>();
+
+        for (Contact contact : [SELECT Id, MailingCity, AccountId FROM Contact WHERE AccountId IN :accountsBillingCityChanged.keySet()]){
+            contact.MailingCity = accountsBillingCityChanged.get('AccountId').BillingCity;
+            contacts.add(contact);
+        } 
+
+        uopdate contacts;
+
     }
      if((Trigger.isInsert || Trigger.isUpdate) && Trigger.isAfter){
 
