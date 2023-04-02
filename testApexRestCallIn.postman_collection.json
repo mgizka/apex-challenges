@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "94ad93cd-b017-40d7-bd19-b5dd38818b13",
+		"name": "testApexRestCallIn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11399925"
+	},
+	"item": [
+		{
+			"name": "test",
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": false,
+				"followRedirects": true,
+				"followOriginalHttpMethod": true,
+				"removeRefererHeaderOnRedirect": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "3MVG97srI77Z1g797pD1ggRF44ls2AAPVV5NoWJY9f06ABsBAtJw2yavyia1ebaOoDHoMzemhzLTmwh.sosIQ",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "6D4BA1A146C13AFC6CFA0CADBB0156E5C72EDDCB79DBCE59C7C9F553DA0CBBD2",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "test-0phwdzzzz9ep@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Amarant123#.Xc8jbVmdAU6s25tvEADR1FTC",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://app-platform-6089-dev-ed.scratch.my.salesforce.com/services/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"app-platform-6089-dev-ed",
+						"scratch",
+						"my",
+						"salesforce",
+						"com"
+					],
+					"path": [
+						"services",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccount",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "getContentVersion",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "app",
+							"type": "string"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://app-platform-6089-dev-ed.scratch.my.salesforce.com/services/data/v57.0/sobjects/ContentVersion/0685r000001s2isAAA/VersionData",
+					"protocol": "https",
+					"host": [
+						"app-platform-6089-dev-ed",
+						"scratch",
+						"my",
+						"salesforce",
+						"com"
+					],
+					"path": [
+						"services",
+						"data",
+						"v57.0",
+						"sobjects",
+						"ContentVersion",
+						"0685r000001s2isAAA",
+						"VersionData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apexContent",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "app",
+							"type": "string"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://app-platform-6089-dev-ed.scratch.my.salesforce.com/services/apexrest/filecontect/\n",
+					"protocol": "https",
+					"host": [
+						"app-platform-6089-dev-ed",
+						"scratch",
+						"my",
+						"salesforce",
+						"com"
+					],
+					"path": [
+						"services",
+						"apexrest",
+						"filecontect",
+						"\n"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
