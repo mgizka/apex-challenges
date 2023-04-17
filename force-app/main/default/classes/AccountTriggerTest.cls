@@ -159,7 +159,7 @@ public class AccountTriggerTest {
             }
         Test.stopTest();
     }
-
+    
     @isTest
     static void testContactMailingCityChangeOnAccountBillingCityUpdate(){
         Account account = new Account(Name='AutomatedTest Account try', Industry='Banking'); 

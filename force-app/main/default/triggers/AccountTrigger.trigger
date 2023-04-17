@@ -1,4 +1,4 @@
-trigger AccountTrigger on Account (after insert, after update, before delete) {
+trigger AccountTrigger on Account (after insert, after update, before delete, before insert, before update) {
     
     if (Trigger.isInsert && Trigger.isAfter){
 
@@ -97,4 +97,16 @@ trigger AccountTrigger on Account (after insert, after update, before delete) {
 
     }
 
+    if (Trigger.isAfter && (Trigger.isInsert || Trigger.isUpdate) ){
+        Set<Id> accountToSync = new Set<Id>();
+
+        for(Account acc : Trigger.new ){
+            if (acc.SyncStatus__c!='Sync'){
+                accountToSync.add(acc.Id);
+                System.debug('addedToSync: '+ acc.Id);
+            }
+        }
+        if(!accountToSync.isEmpty())
+            SendAccountStatusCallout.syncStatus(accountToSync);
+    }
 }
